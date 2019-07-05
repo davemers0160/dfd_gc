@@ -53,6 +53,7 @@ file(GLOB_RECURSE SOURCES "src/*.c*" "${COMMON_ROOT}/src/getopt.c")
 #set(dfd_includes "../common" "include" "src/gco-v3")
 set(project_includes "include" "${COMMON_ROOT}/include" "${DFD_COMMON_ROOT}/include")
 
+# Display the source files found
 message(" ")
 message("--------------------------------------------------------")
 message("DfD Graph Cuts Project Source Files: ")

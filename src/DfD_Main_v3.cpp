@@ -179,7 +179,7 @@ int main(int argc, char** argv)
 
 	if (parsefile == true)
 	{
-        parseCSVFile(parseFilename, params);// vFocusFile, vDefocusFile, vSaveLocation);
+        parse_csv_file(parseFilename, params);// vFocusFile, vDefocusFile, vSaveLocation);
         
         std::string data_directory = params[0][0];
         params.erase(params.begin());

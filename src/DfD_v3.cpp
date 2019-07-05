@@ -234,9 +234,9 @@ void dfd(string image_locations, ofstream &DataLogStream, double maxSigma, doubl
 	// full YCrCB color
 
 #if defined(_WIN32) | defined(__WIN32__) | defined(__WIN32) | defined(_WIN64) | defined(__WIN64)
-	std::thread t_Y(createblur, ImageInFocusY, maxSigma, minSigma, classes, std::ref(xt_Y));
-	std::thread t_Cr(createblur, ImageInFocusCr, maxSigma, minSigma, classes, std::ref(xt_Cr));
-	std::thread t_Cb(createblur, ImageInFocusCb, maxSigma, minSigma, classes, std::ref(xt_Cb));
+	std::thread t_Y(create_blur, ImageInFocusY, maxSigma, minSigma, classes, std::ref(xt_Y));
+	std::thread t_Cr(create_blur, ImageInFocusCr, maxSigma, minSigma, classes, std::ref(xt_Cr));
+	std::thread t_Cb(create_blur, ImageInFocusCb, maxSigma, minSigma, classes, std::ref(xt_Cb));
 	t_Y.join();
 	t_Cr.join();
 	t_Cb.join();
