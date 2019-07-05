@@ -1,0 +1,13 @@
+# This is a parameter file that lists the location, and images to process
+# for the loading of the DfD datasets.  The format is as follows:
+# <data directory>, <infocus image>, <defocused image>, <ground truth image>
+#
+# Comments in this file should start with '#'
+#
+# Data Directory
+D:/IUPUI/Test_Data/Cannon_EOS/
+#
+# Data Files
+IMG_0763.png, IMG_0764.png, IMG_0763.png
+IMG_0763.png, IMG_0765.png, IMG_0763.png
+

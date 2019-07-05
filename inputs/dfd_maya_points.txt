@@ -1,0 +1,30 @@
+# This is a parameter file that lists the location, and images to process
+# for the loading of the DfD datasets.  The format is as follows:
+# <data directory>, <infocus image>, <defocused image>, <ground truth image>
+#
+# Comments in this file should start with '#'
+#
+# Data Directory
+D:/IUPUI/Test_Data/Maya_Test1/images/
+#
+# Data Files
+disc_3_infocus.png, disc_3_infocusd_lin_2.56.png, disc_3_dm.png
+#point3_50_50.png, point3_05_50.png, point3_dm.png
+#point3_50_50.png, point3_07_50.png, point3_dm.png
+#point3_50_50.png, point3_10_50.png, point3_dm.png
+#point3_50_50.png, point3_15_50.png, point3_dm.png
+#point3_50_50.png, point3_20_50.png, point3_dm.png
+#point3_50_50.png, point3_25_50.png, point3_dm.png
+#point3_50_50.png, point3_30_50.png, point3_dm.png
+#point3_50_50.png, point3_35_50.png, point3_dm.png
+#point3_50_50.png, point3_37_50.png, point3_dm.png
+#point3_50_50.png, point3_40_50.png, point3_dm.png
+#point3_50_50.png, point3_43_50.png, point3_dm.png
+#point3_50_50.png, point3_45_50.png, point3_dm.png
+#point3_50_50.png, point3_48_50.png, point3_dm.png
+
+
+
+
+
+

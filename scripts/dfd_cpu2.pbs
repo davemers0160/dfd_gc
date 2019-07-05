@@ -1,0 +1,106 @@
+#!/bin/bash
+## Required PBS Directives --------------------------------------
+## DfD Test Script
+
+## Debug Section
+#PBS -q debug_cpu
+
+## Standard Section
+##PBS -q cpu
+
+## Common PBS settings
+#PBS -l nodes=4:ppn=32
+#PBS -l walltime=01:00:00
+#PBS -l mem=24576mb
+#PBS -l gres=ccm
+#PBS -N DFD_cpu
+#PBS -j oe
+##PBS -m be
+##PBS -M 
+#PBS -V
+
+## Set up some script environment variables
+N=4
+S=0
+
+echo
+echo "--- Loading Modules ---"
+
+module load ccm
+module swap PrgEnv-cray PrgEnv-gnu
+#module load craype-accel-nvidia35
+#module swap cudatoolkit/7.0.28-1.0502.10742.5.1 cudatoolkit/7.5.18-1.0502.10743.2.1
+#module load cudnn/7.5
+module load vtk
+module load opencv
+
+echo
+echo "--- Exporting Environment Variables ---"
+export PLATFORM=HPC
+#export CUDNN_PATH=/N/soft/cle5/cuDNN/cudnn-7.5/cuda
+#export CUDA_INCLUDE_DIRS=$CUDNN_PATH/include
+
+# Declare the required variables
+PROJECT_DIR=$HOME/Projects/DFD_GC
+SOURCE_DIR=$PROJECT_DIR/build
+DFD_PARAM_FILE=dfd_mb_sm_all.txt
+
+WORKDIR=/N/dc2/scratch/davemers
+JOBDIR=$WORKDIR/$PBS_JOBID
+cd $WORKDIR
+mkdir $PBS_JOBID
+
+echo
+echo "........ Copying files to $JOBDIR ..........."
+cp -r $SOURCE_DIR/* $JOBDIR
+cp $PROJECT_DIR/$DFD_PARAM_FILE $JOBDIR
+
+echo
+echo "........ Working Directory ..........."
+cd $PBS_JOBID
+for ((i=$S; i<(( $N + $S )); i++))
+do
+    mkdir results${i}
+done
+pwd
+
+
+
+
+echo
+echo "Running DfD code..."
+
+# When invoking aprun on the CPU/GPU nodes, the -n argument specifies the total
+# number of nodes (not the total number of processing elements), and the -N
+# argument specifies the number of GPUs per node, which is one (e.g., -N 1).
+
+## Execution Block ----------------------------------------------
+echo
+for ((i=$S; i<(( $N + $S )); i++))
+do
+    echo "  aprun -n 1 -N 1 ./DFD_ex -f $DFD_PARAM_FILE -o results/ -s 3.0:1.0:3.0 -n $i &"
+    aprun -n 1 -N 1 ./DFD_ex -f $DFD_PARAM_FILE -o results${i}/ -s 3.0:1.0:3.0 -n $i &
+done
+
+echo
+echo "Waiting for completion..."
+
+wait
+
+#aprun -n 1 -N 1 $HOME/Projects/DFD/build/./DFD_ex -l $HOME/Projects/DFD/Data/ -f test.txt
+
+# Copying results from the job
+echo
+echo "Taring Results from: $PBS_JOBID.tar $JOBDIR/results"
+cd $JOBDIR
+tar cvf $PBS_JOBID.tar results*
+cp $PBS_JOBID.tar $HOME/transfer/
+
+
+echo
+echo "--------------------End of script-------------------------"
+echo
+
+
+# end of file
+

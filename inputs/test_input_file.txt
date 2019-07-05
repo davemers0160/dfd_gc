@@ -1,0 +1,11 @@
+# This is a parameter file that lists the location, and images to process
+# for the loading of the DfD datasets.  The format is as follows:
+# <data directory>, <infocus image>, <defocused image>, <ground truth image>
+#
+# Comments in this file should start with '#'
+#
+# data directory
+D:/IUPUI/Test_Data/spheres/
+#
+# data files
+sphere1.jpg,blur.jpg,depth.jpg

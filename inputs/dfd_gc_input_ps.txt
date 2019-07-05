@@ -1,0 +1,13 @@
+# This is a parameter file that lists the location, and images to process
+# for the loading of the DfD datasets.  The format is as follows:
+# <data directory>, <infocus image>, <defocused image>, <ground truth image>
+#
+# Comments in this file should start with '#'
+#
+# Data Directory
+D:/IUPUI/Test_Data/Middlebury_Images_Third/
+#
+# Data Files
+Aloe/Illum1/Exp2/view1.png, Aloe/Illum1/Exp2/view1_r10_f212_e0.8.png, Aloe/disp1.png
+
+

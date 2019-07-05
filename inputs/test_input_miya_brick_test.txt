@@ -1,0 +1,1 @@
+D:\IUPUI\Test_Data\Miya_Tests\Interiors\block_test2\brick_defocus_9.6_cam2cm_dof03.50_2blk.jpg, D:\IUPUI\Test_Data\Miya_Tests\Interiors\block_test2\brick_defocus_9.6_cam2cm_dof02.65_2blk.jpg, D:\IUPUI\Test_Data\Miya_Tests\Interiors\block_test2\brick_depth_00.00-13.00_cam2cm_2blk.jpg
