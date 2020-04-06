@@ -1,2 +1,0 @@
-D:\IUPUI\Test_Data\Miya_Tests\Interiors\images\test_wall_focus_3.0.png, D:\IUPUI\Test_Data\Miya_Tests\Interiors\images\test_wall_focus_2.9.png, D:\IUPUI\Test_Data\Miya_Tests\Interiors\images\test_wall_11.0.png
-D:\IUPUI\Test_Data\Miya_Tests\Interiors\images\test_wall_focus_3.0.png, D:\IUPUI\Test_Data\Miya_Tests\Interiors\images\test_wall_focus_2.8.png, D:\IUPUI\Test_Data\Miya_Tests\Interiors\images\test_wall_11.0.png

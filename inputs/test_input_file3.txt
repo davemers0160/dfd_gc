@@ -1,1 +1,0 @@
-D:\IUPUI\Test_Data\Miya_Tests\donut infocus.jpg,D:\IUPUI\Test_Data\Miya_Tests\lin_donut infocusd_2.0.png,D:\IUPUI\Test_Data\Miya_Tests\donut_depth map.jpg
