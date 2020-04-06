@@ -4,7 +4,7 @@
 #include <opencv2/core/core.hpp>           
 #include <opencv2/highgui/highgui.hpp>     
 #include <opencv2/imgproc/imgproc.hpp>  
-#include <opencv/cv.h>
+//#include <opencv/cv.h>
 
 #include <algorithm>
 #include <vector> 
@@ -38,7 +38,7 @@ void averageImage(std::string filename, cv::Mat &finalImage, int numImages)
 		count++;
 	}
 	index = string(4 - count, '0') + to_string(idx) + ".tif";
-	img = imread((filename + index), CV_LOAD_IMAGE_ANYCOLOR);
+	img = imread((filename + index), IMREAD_ANYCOLOR);
 	imageSize = img.size();
 
 	imgAvg = cv::Mat(imageSize, CV_64FC3, cv::Scalar::all(0.0));
@@ -54,7 +54,7 @@ void averageImage(std::string filename, cv::Mat &finalImage, int numImages)
 			count++;
 		}
 		index = std::string(4 - count, '0') + to_string(idx) + ".tif";
-		img = cv::imread((filename + index), CV_LOAD_IMAGE_ANYCOLOR);
+		img = cv::imread((filename + index), IMREAD_ANYCOLOR);
 		cv::add(img, imgAvg, imgAvg, Mat(), CV_64FC3);
 	}
 	imgAvg = imgAvg * (1.0 / numImages);
@@ -66,12 +66,12 @@ void averageImage(std::string filename, cv::Mat &finalImage, int numImages)
 void doSomething(std::string filename, cv::Mat &img)
 {
 	cv::Mat tempIn, tempOut;
-	tempIn = imread((filename + "Depth_Map_132-136-1.0-avg4.png"), CV_LOAD_IMAGE_ANYCOLOR);
+	tempIn = imread((filename + "Depth_Map_132-136-1.0-avg4.png"), IMREAD_ANYCOLOR);
 
 	medianBlur(tempIn, tempIn, 3);
 
 	std::vector<int> compression_params;
-	compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+	compression_params.push_back(IMWRITE_PNG_COMPRESSION);
 	compression_params.push_back(0);
 
 	cv::imwrite((filename + "Depth_Map_132-136-1.0-avg4_med.png"), tempIn, compression_params);

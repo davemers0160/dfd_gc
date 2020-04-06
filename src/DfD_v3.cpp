@@ -18,7 +18,7 @@
 #include <opencv2/core/core.hpp>           
 #include <opencv2/highgui/highgui.hpp>     
 #include <opencv2/imgproc/imgproc.hpp>  
-#include <opencv/cv.h>
+//#include <opencv/cv.h>
 
 // Cusom Includes
 #include "DfD.h"
@@ -47,7 +47,7 @@ void dfd(string image_locations, ofstream &DataLogStream, double maxSigma, doubl
 	string logfileName; // = "DfD_v2_logfile.txt";
 
 	vector<int> compression_params;
-	compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+	compression_params.push_back(IMWRITE_PNG_COMPRESSION);
 	compression_params.push_back(0);
 
 	Size imageSize = infocusImage.size();
@@ -70,8 +70,8 @@ void dfd(string image_locations, ofstream &DataLogStream, double maxSigma, doubl
 	////// Convert the two images from RGB to YCrCb (Here "in" means in focus and "out" means defocus) ///
 	cv::Mat YCbCrin = cv::Mat(imageSize, CV_8UC3);
     cv::Mat YCbCrout = cv::Mat(imageSize, CV_8UC3);
-    cv::cvtColor(infocusImage, YCbCrin, CV_BGR2YCrCb, 3);
-    cv::cvtColor(defocusImage, YCbCrout, CV_BGR2YCrCb, 3);
+    cv::cvtColor(infocusImage, YCbCrin, COLOR_BGR2YCrCb, 3);
+    cv::cvtColor(defocusImage, YCbCrout, COLOR_BGR2YCrCb, 3);
 
 	std::vector<cv::Mat> YCRCB_IN(3);
 	std::vector<cv::Mat> YCRCB_OUT(3);
@@ -232,11 +232,12 @@ void dfd(string image_locations, ofstream &DataLogStream, double maxSigma, doubl
 	//createblur(ImageInFocusY, sigma, classes, std::ref(xt_Y));
 
 	// full YCrCB color
+	double sigma_step = (maxSigma - minSigma) / (double)classes;
 
 #if defined(_WIN32) | defined(__WIN32__) | defined(__WIN32) | defined(_WIN64) | defined(__WIN64)
-	std::thread t_Y(create_blur, ImageInFocusY, maxSigma, minSigma, classes, std::ref(xt_Y));
-	std::thread t_Cr(create_blur, ImageInFocusCr, maxSigma, minSigma, classes, std::ref(xt_Cr));
-	std::thread t_Cb(create_blur, ImageInFocusCb, maxSigma, minSigma, classes, std::ref(xt_Cb));
+	std::thread t_Y(create_blur, ImageInFocusY, minSigma, sigma_step, classes, std::ref(xt_Y));
+	std::thread t_Cr(create_blur, ImageInFocusCr, minSigma, sigma_step, classes, std::ref(xt_Cr));
+	std::thread t_Cb(create_blur, ImageInFocusCb, minSigma, sigma_step, classes, std::ref(xt_Cb));
 	t_Y.join();
 	t_Cr.join();
 	t_Cb.join();

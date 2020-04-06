@@ -13,7 +13,7 @@
 #include <opencv2/core/core.hpp>           
 #include <opencv2/highgui/highgui.hpp>     
 #include <opencv2/imgproc/imgproc.hpp>  
-#include <opencv/cv.h>
+//#include <opencv/cv.h>
 
 #include "DfD.h"
 #include "support_functions.h"
@@ -155,7 +155,7 @@ void map3(string &DataLog, cv::Mat &Depth_Map, std::vector<cv::Mat> &diff_Y, std
 		diffSumMat[idx].~Mat();
 	}
 
-	bitwise_not(gridResult, Depth_Map);
+	cv::bitwise_not(gridResult, Depth_Map);
 	Depth_Map = Depth_Map + 1;
 
 	tock = (double)cv::getTickCount();  
@@ -181,11 +181,11 @@ void gen_smooth_terms(int32_t classes, int32_t smooth[])
             //smooth[idx + jdx*classes] = (idx - jdx)*(idx - jdx) <= 4 ? (idx - jdx)*(idx - jdx) : 4;
 
             // Chaos version of the smoothness term <- this works
-            smooth[idx + jdx*classes] = 3*std::abs(idx - jdx);
+            //smooth[idx + jdx*classes] = 3*std::abs(idx - jdx);
 
             // yes with slightly better MSE and SSIM 
             //-------------------------------------------
-            //smooth[idx + jdx*classes] = (int)(5.28 * 255 * std::abs(1 - std::exp(0.0015*(idx - jdx))) / (1 + std::exp(0.0015*(idx - jdx))));
+            smooth[idx + jdx*classes] = (int)(5.28 * 255 * std::abs(1 - std::exp(0.0015*(idx - jdx))) / (1 + std::exp(0.0015*(idx - jdx))));
             //-------------------------------------------
 
 

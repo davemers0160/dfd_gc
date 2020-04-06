@@ -4,7 +4,7 @@
 #include <opencv2/core/core.hpp>           
 #include <opencv2/highgui/highgui.hpp>     
 #include <opencv2/imgproc/imgproc.hpp>  
-#include <opencv/cv.h>
+//#include <opencv/cv.h>
 
 #include <algorithm>
 #include <vector> 
@@ -84,8 +84,8 @@ void readFile(Mat &infocusImage, Mat &defocusImage, string f1, string f2, int ty
 			// img1.convertTo(infocusImage, CV_8UC3, 1, 0);
 			// img2.convertTo(defocusImage, CV_8UC3, 1, 0);
             
-			infocusImage = cv::imread(f1, CV_LOAD_IMAGE_COLOR);
-			defocusImage = cv::imread(f2, CV_LOAD_IMAGE_COLOR);
+			infocusImage = cv::imread(f1, IMREAD_COLOR);
+			defocusImage = cv::imread(f2, IMREAD_COLOR);
 
 			break;
 
@@ -113,7 +113,7 @@ void readFile(Mat &infocusImage, Mat &defocusImage, string f1, string f2, int ty
 			//file1 = f1 + "0000.png";
 			//file1 = f1 + "0000.tif";
 			//img1 = imread(file1, CV_LOAD_IMAGE_COLOR);
-			img1 = cv::imread(f1, CV_LOAD_IMAGE_COLOR);
+			img1 = cv::imread(f1, IMREAD_COLOR);
 			imageSize = img1.size();
 
 			infocusImage = cv::Mat(imageSize, CV_8UC3, cv::Scalar::all(0));
@@ -136,8 +136,8 @@ void readFile(Mat &infocusImage, Mat &defocusImage, string f1, string f2, int ty
 				//file2 = f2 + "000" + to_string(idx) + ".png";
 				//file1 = f1 + "000" + to_string(idx) + ".tif";
 				//file2 = f2 + "000" + to_string(idx) + ".tif";
-				medMat_I[idx] = cv::imread(file1, CV_LOAD_IMAGE_COLOR);
-				medMat_O[idx] = cv::imread(file2, CV_LOAD_IMAGE_COLOR);
+				medMat_I[idx] = cv::imread(file1, IMREAD_COLOR);
+				medMat_O[idx] = cv::imread(file2, IMREAD_COLOR);
 
 			}
 
@@ -192,7 +192,7 @@ void readFile(Mat &infocusImage, Mat &defocusImage, string f1, string f2, int ty
 
 		case 4:			// run histogram on dark image
 
-			img1 = imread(f1, CV_LOAD_IMAGE_COLOR);
+			img1 = imread(f1, IMREAD_COLOR);
 
 			split(img1, BGR_Vec);
 

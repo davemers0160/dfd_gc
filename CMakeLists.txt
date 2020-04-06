@@ -26,65 +26,83 @@ set(exe_name "dfd_gc_ex")
 # This looks for an environment variable called PLATFORM.  This can be used to point
 # cmake to various locations based on the individual machines that the code is complied on
 set(PLATFORM "$ENV{PLATFORM}" CACHE INTERNAL "Copied from environment variable")
+if("${PLATFORM}" STREQUAL "")
+    set(PLATFORM "NOT_SET")
+    message("The PLATFORM Environment variable is not set on this system.  Setting it to:")
+endif()
+
 message("Platform: " ${PLATFORM})
 
-
-if(${PLATFORM} STREQUAL "Laptop")
-    set(COMMON_ROOT "D:/Common")
-    set(DFD_COMMON_ROOT "D:/Projects/dfd_common")
-elseif(${PLATFORM} STREQUAL "MainGear")
-    set(COMMON_ROOT "~/Common")
-    set(DFD_COMMON_ROOT "~/Projects/dfd_common")
-elseif(${PLATFORM} STREQUAL "HPC")
-    set(COMMON_ROOT "$HOME/Common")
-    set(DFD_COMMON_ROOT "$HOME/Projects/dfd_common")
+if(WIN32)
+    if(${PLATFORM} STREQUAL "Laptop")
+        set(COMMON_ROOT "D:/Common")
+        set(DFD_COMMON_ROOT "D:/Projects/dfd_common")
+    elseif(${PLATFORM} STREQUAL "BEAST")
+        set(COMMON_ROOT "D:/Projects/Common")
+        set(DFD_COMMON_ROOT "D:/Projects/dfd_common")
+    else()
+        set(COMMON_ROOT "D:/Projects/Common")
+        set(DFD_COMMON_ROOT "D:/Projects/dfd_common")    
+    endif()
 else()
-    set(COMMON_ROOT "D:/Common")
-    set(DFD_COMMON_ROOT "D:/Projects/dfd_common")	
+    if(${PLATFORM} STREQUAL "MainGear")
+        set(COMMON_ROOT "~/Projects/Common")
+        set(DFD_COMMON_ROOT "~/Projects/dfd_common")
+    elseif(${PLATFORM} STREQUAL "HPC")
+        set(COMMON_ROOT "~/Projects/Common")
+        set(DFD_COMMON_ROOT "~/Projects/dfd_common")
+    else()
+        set(COMMON_ROOT "~/Projects/Common")
+        set(DFD_COMMON_ROOT "~/Projects/dfd_common")   
+    endif()
+        
 endif()
 
 include(${COMMON_ROOT}/cmake_utils/use_cpp_11.cmake)
 include(${COMMON_ROOT}/cmake_utils/use_sse_avx.cmake)
 
-
 # look for any *.c and *.cpp files
 file(GLOB_RECURSE SOURCES "src/*.c*" "${COMMON_ROOT}/src/getopt.c")
 
 #set(dfd_includes "../common" "include" "src/gco-v3")
-set(project_includes "include" "${COMMON_ROOT}/include" "${DFD_COMMON_ROOT}/include")
+set(project_includes "include" 
+    "${COMMON_ROOT}/include" 
+    "${DFD_COMMON_ROOT}/include"
+    )
 
-# Display the source files found
+# find OpenCV
+if(${PLATFORM} STREQUAL "HPC")
+    message("HPC detected.  OpenCV will not be used.")
+else()
+    find_package(OpenCV REQUIRED)
+    if (OpenCV_FOUND)
+        set(project_includes ${project_includes} ${OpenCV_INCLUDE_DIRS})
+    else()
+        message("OpenCV not found, so we won't build the project.")
+    endif()
+endif()
+
 message(" ")
 message("--------------------------------------------------------")
-message("DfD Graph Cuts Project Source Files: ")
+message("Source Files: ")
 foreach(S ${SOURCES})
+    message("  " ${S})
+endforeach()
+message("--------------------------------------------------------")
+
+message(" ")
+
+message("--------------------------------------------------------")
+message("Project Includes: ")
+foreach(S ${project_includes})
     message("  " ${S})
 endforeach()
 message("--------------------------------------------------------")
 message(" ")
 
-
-# find OpenCV
-find_package(OpenCV REQUIRED)
-if (OpenCV_FOUND)
-	set(project_includes ${project_includes} ${OpenCV_INCLUDE_DIRS})
-    
-    message(" ")
-    message("--------------------------------------------------------")
-    message("DfD Graph Cuts Project Includes: ")
-    foreach(S ${project_includes})
-        message("  " ${S})
-    endforeach()
-    message("--------------------------------------------------------")
-    message(" ")
-    
-    include_directories(${project_includes})
-	add_executable(${exe_name} ${SOURCES})
-	target_link_libraries(${exe_name} ${OpenCV_LIBS})
-
-else()
-	message("OpenCV not found, so we won't build the project.")
-endif()
+include_directories(${project_includes})
+add_executable(${exe_name} ${SOURCES})
+target_link_libraries(${exe_name} ${OpenCV_LIBS})
 
 if(WIN32)
     # uncomment for MSVC and cmake greater than 3.6.0

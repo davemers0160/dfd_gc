@@ -29,6 +29,7 @@
 #include "DfD.h"
 #include "support_functions.h"
 #include "get_current_time.h"
+#include "file_ops.h"
 #include "file_parser.h"
 #include "calc_dfd_error.h"
 //#include "path_check.h"
@@ -77,7 +78,8 @@ int main(int argc, char** argv)
 	cv::Mat combinedImages;
     cv::Mat DepthMap;
         
-	std::string focusfilename, defocusfilename;
+    std::string data_directory;
+    std::string focusfilename, defocusfilename;
 	std::string SaveLocation;
 	std::string groundTruthfilename;
 	std::string sdate, stime;
@@ -97,7 +99,7 @@ int main(int argc, char** argv)
 	//cv::Size ROI_Size;
 
 	std::vector<int> compression_params;
-	compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+	compression_params.push_back(IMWRITE_PNG_COMPRESSION);
 	compression_params.push_back(0);
 
 	// variables to read in data from csv file
@@ -136,8 +138,7 @@ int main(int argc, char** argv)
 			break;
 
 		case 'l':				// input image directory 
-			image_locations = optarg;
-            path_check(image_locations);
+			image_locations = path_check(optarg);
 			break;
 
 		case 'i':				// infocus image
@@ -155,8 +156,7 @@ int main(int argc, char** argv)
 			avg = atoi(optarg);
 			break;
 		case 'o':				// output file directory
-			SaveLocation = optarg;
-            path_check(SaveLocation);	
+			SaveLocation = path_check(optarg);
             break;
 
         case 's':               // sigma range [min_sigma:step:max_sigma]       
@@ -181,11 +181,8 @@ int main(int argc, char** argv)
 	{
         parse_csv_file(parseFilename, params);// vFocusFile, vDefocusFile, vSaveLocation);
         
-        std::string data_directory = params[0][0];
+        data_directory = path_check(params[0][0]);
         params.erase(params.begin());
-
-        path_check(data_directory);
-
         
         std::cout << "Input Image Count: " << params.size() << std::endl;
 
@@ -258,12 +255,7 @@ int main(int argc, char** argv)
             tmpSaveLocation = vSaveLocation[idx];
         }
 
-        path_check(tmpSaveLocation);
-		//loc_substr = tmpSaveLocation.substr(tmpSaveLocation.length() - 1, 1);
-		//if (loc_substr != "\\" & loc_substr != "/")
-		//{
-  //          tmpSaveLocation = tmpSaveLocation + "/";
-		//}
+        tmpSaveLocation = path_check(tmpSaveLocation);
 
         int focus_loc, defocus_loc, groundtruth_loc;
 
@@ -285,7 +277,7 @@ int main(int argc, char** argv)
 
 		readFile(infocusImage, defocusImage, vFocusFile[idx], vDefocusFile[idx], SINGLE_PAIR, avg);
 
-        cv::Mat groundTruth = imread(vDepthFile[idx], CV_LOAD_IMAGE_GRAYSCALE);
+        cv::Mat groundTruth = imread(vDepthFile[idx], IMREAD_GRAYSCALE);
 
         // check to see if the images have been read correctly and that there is data in the images
         if (infocusImage.empty() == true) 
@@ -420,7 +412,7 @@ int main(int argc, char** argv)
             //DataLogStream << "MSE: " << std::fixed << std::setprecision(6) << NRMSE << "\tMAE: " << NMAE << "\tPSNR: " << PSNR << "\tSSIM: " << ssim_val << std::endl;
             DataLogStream << "<NMAE>, <NRMSE>, <SSIM>: " << std::fixed << std::setprecision(6) << NMAE << ", " << NRMSE  << ", " << ssim_val << std::endl;
 
-            cv::cvtColor(DepthMap, DepthMap, CV_GRAY2BGR);
+            cv::cvtColor(DepthMap, DepthMap, cv::COLOR_GRAY2BGR);
 
             combinedImages = cv::Mat(DepthMap.rows, DepthMap.cols * 2, CV_8UC3);
             infocusImage.copyTo(combinedImages(cv::Rect(0, 0, DepthMap.cols, DepthMap.rows)));
@@ -456,8 +448,9 @@ int main(int argc, char** argv)
         cv::destroyAllWindows();
     }
 
-	std::cout << "End of Program." << std::endl;
+	std::cout << "End of Program.  Press Enter to close..." << std::endl;
 	DataLogStream.close();
+
 
 	std::cin.ignore();
     return 0; 
