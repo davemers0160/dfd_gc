@@ -70,13 +70,10 @@ To run the code the best option is to supply a file that contains the image pair
 
 The following parameters can be supplied to the executable:
 
--f input text file that contains a comma seprated list of images and ground truth data; Example: -f ../inputs/dfd_mb_input.txt
-
--o directory where the results will be saved; Example: -o ../results/
-
--s list of sigma values in the form (min:step:max) Example: -s 0.32:0.01:2.88
-
--n index into the list supplied in option 'f' that causes the code to only run that image pair; Example: -n 10
+* -f input text file that contains a comma seprated list of images and ground truth data; Example: -f ../inputs/dfd_mb_input.txt
+* -o directory where the results will be saved; Example: -o ../results/
+* -s list of sigma values in the form (min:step:max) Example: -s 0.32:0.01:2.88
+* -n index into the list supplied in option 'f' that causes the code to only run that image pair; Example: -n 10
 
 
 To run this code from the command line in Windows using the sample input text file type the following:
