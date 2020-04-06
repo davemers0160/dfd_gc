@@ -137,24 +137,24 @@ int main(int argc, char** argv)
 			return 0;
 			break;
 
-		case 'l':				// input image directory 
-			image_locations = path_check(optarg);
-			break;
+		//case 'l':				// input image directory 
+		//	image_locations = path_check(optarg);
+		//	break;
 
-		case 'i':				// infocus image
-			focusfilename = optarg;
-			break;
+		//case 'i':				// infocus image
+		//	focusfilename = optarg;
+		//	break;
 
-		case 'd':				// defocus image 
-			defocusfilename = optarg;
-			break;
+		//case 'd':				// defocus image 
+		//	defocusfilename = optarg;
+		//	break;
 		case 'f':				// read in image pairs from a csv file
 			parseFilename = optarg;
 			parsefile = true;
 			break;
-		case 'a':
-			avg = atoi(optarg);
-			break;
+		//case 'a':
+		//	avg = atoi(optarg);
+		//	break;
 		case 'o':				// output file directory
 			SaveLocation = path_check(optarg);
             break;
@@ -168,9 +168,9 @@ int main(int argc, char** argv)
             single_file = true;
             break;
 
-        case 'm':
-            parse_input_range(optarg, minSigma);
-            break;
+        //case 'm':
+        //    parse_input_range(optarg, minSigma);
+        //    break;
 
 		default:
 			break;
